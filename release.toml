@@ -1,0 +1,7 @@
+consolidate-commits = true
+no-confirm = true
+publish = false
+tag-name = "v{{version}}"
+pre-release-commit-message = "chore(release): {{version}}"
+push = true
+allow-branch = ["main"]
