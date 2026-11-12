@@ -1,5 +1,4 @@
-consolidate-commits = true
-no-confirm = true
+consolidate-commits = false
 publish = false
 tag-name = "v{{version}}"
 pre-release-commit-message = "chore(release): {{version}}"
