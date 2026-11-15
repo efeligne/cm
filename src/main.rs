@@ -470,11 +470,26 @@ fn validate_file_coverage(message: &str, files: &[FileDiff]) -> Result<(), Box<d
         .filter(|line| line.starts_with("- "))
         .collect::<Vec<_>>();
 
+    let diagnostics = || {
+        format!(
+            "\nExpected files ({}):\n{}\nReceived file bullets ({}):\n{}",
+            files.len(),
+            file_manifest(files),
+            bullets.len(),
+            if bullets.is_empty() {
+                "<none>".to_string()
+            } else {
+                bullets.join("\n")
+            }
+        )
+    };
+
     if bullets.len() != files.len() {
         return Err(format!(
-            "MLX returned {} file bullets; expected {}.",
+            "MLX returned {} file bullets; expected {}.{}",
             bullets.len(),
-            files.len()
+            files.len(),
+            diagnostics()
         )
         .into());
     }
@@ -487,8 +502,10 @@ fn validate_file_coverage(message: &str, files: &[FileDiff]) -> Result<(), Box<d
             .count();
         if matches != 1 {
             return Err(format!(
-                "MLX returned {} bullets for {}; expected exactly one.",
-                matches, file.path
+                "MLX returned {} bullets for {}; expected exactly one.{}",
+                matches,
+                file.path,
+                diagnostics()
             )
             .into());
         }
